@@ -1,0 +1,23 @@
+inputs: {}
+resources:
+  centos:
+    type: Cloud.Machine
+    properties:
+      image: centos
+      flavor: small
+      remoteAccess:
+        authentication: generatedPublicPrivateKey
+    forceRecreate: true
+  puppet_1:
+    type: Cloud.Puppet
+    properties:
+      host: '${centos.*}'
+      role: 'role::linux_webserver'
+      osType: linux
+      provider: PEMasterAWS
+      username: centos
+      environment: production
+      useSudo: true
+      agentConfiguration:
+        certName: '${centos.address}'
+        runInterval: 30m
